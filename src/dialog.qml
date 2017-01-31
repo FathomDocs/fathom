@@ -10,9 +10,15 @@ Dialog {
     contentItem: Rectangle {
         implicitWidth: 400
         implicitHeight: 100
+        focus: true
         Text {
             text: "modal dialog!"
-            anchors.centerIn: parent
+            anchors.top: parent.top
+        }
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Escape) {
+                close();
+            }
         }
     }
 }

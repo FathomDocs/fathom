@@ -10,6 +10,11 @@ ApplicationWindow {
 
     SwipeView {
         id: swipeView
+        /* focus: true is required to get key events? It seems like we'll always want to do
+          ctrl+p (or whatever) to get the palette dialog, so we might need to propogate the Key
+          events from wherever we are, somehow.
+          */
+        focus: true
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
 
@@ -17,18 +22,22 @@ ApplicationWindow {
         }
 
         Page {
-            ListView{
-                ListElement {
-                       width: 180
-                   }
-            }
-
             Label {
                 text: qsTr("Second page")
                 anchors.centerIn: parent
             }
         }
+
+        Keys.onPressed: {
+            console.log(event.key);
+            if ((event.key == Qt.Key_P) && (event.modifiers & Qt.ControlModifier)) {
+                Qt.createComponent("dialog.qml").createObject(swipeView, {});
+                event.accepted = true;
+            }
+        }
     }
+
+
 
     footer: TabBar {
         id: tabBar
